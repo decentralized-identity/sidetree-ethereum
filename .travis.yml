@@ -9,6 +9,7 @@ cache:
 before_install:
   - npm i -g ganache-cli@6.1.0
   - ganache-cli &>/dev/null &
+  - sleep 2 # wait for ganache-cli
 
 script:
  - curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://localhost:8545
