@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "8.11.4"
+
+cache:
+  directories:
+    - "node_modules"
+
+before_install:
+  - npm i -g ganache-cli@6.1.0
+  - ganache-cli &>/dev/null &
+
+script:
+ - curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://localhost:8545
