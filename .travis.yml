@@ -7,9 +7,13 @@ cache:
     - "node_modules"
 
 before_install:
-  - npm i -g ganache-cli@6.1.0
+  - npm i -g ganache-cli@6.1.0 truffle@4.1.14
   - ganache-cli &>/dev/null &
   - sleep 6 # wait for ganache-cli
 
+install:
+  - npm i
+
 script:
  - curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":0}' http://localhost:8545
+ - truffle test
