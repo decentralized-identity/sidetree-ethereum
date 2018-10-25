@@ -7,18 +7,19 @@ contract EthDIDAnchor {
 
     // Mapping the txnNumber to anchorHash
     bytes32[] public transactions;
-    uint public transactionNumber = 0;
+    uint256 public transactionNumber = 0;
 
-    event AnchorHashCreated(bytes32 anchorHash, bytes32 ipfsHash);
+    event AnchorHashCreated(bytes32 anchorHash, bytes32 ipfsHash, uint256 transactionNumber);
 
     function newAnchorHash(bytes32 _anchorHash, bytes32 _ipfsHash) public {
         anchors[_anchorHash] = _ipfsHash;
+        transactions.push(_anchorHash);
         transactionNumber++;
-        transactions[transactionNumber] = _anchorHash;
-        emit AnchorHashCreated(_anchorHash, _ipfsHash);
+
+        emit AnchorHashCreated(_anchorHash, _ipfsHash, transactionNumber);
     }
 
-    function doesHashExist(bytes32 _anchorHash) public view returns(bytes32) {
+    function getIPFSHashForAnchor(bytes32 _anchorHash) public view returns(bytes32) {
         return anchors[_anchorHash];
     }
 
