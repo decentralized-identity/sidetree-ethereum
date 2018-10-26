@@ -1,0 +1,36 @@
+{
+  "name": "sidetree-ethereum",
+  "version": "0.1.0",
+  "description": "An ethereum backed identity sidetree",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentralized-identity/sidetree-ethereum.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/decentralized-identity/sidetree-ethereum/issues"
+  },
+  "homepage": "https://github.com/decentralized-identity/sidetree-ethereum#readme",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "koa": "^2.6.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "truffle-contract": "^3.0.6"
+  }
+}
