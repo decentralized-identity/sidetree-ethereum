@@ -7,16 +7,15 @@ const transactionService = require("./services/transactions");
 const router = new Router();
 
 router.post('/:apiVersion/transactions', async (ctx, next) => {
-  try {
-    return next();
+  try { 
     // TODO validate the ctx.params.apiVersion
     // TODO validate the anchorFileHash is in the body
-    console.log("in the route, ctx is ", ctx);
     let receipt = await transactionService.anchorNewHash(ctx.request.body.anchorFileHash);
-    console.log("receipt is ", receipt);
+    ctx.response.status = 200;
     return next(receipt);
   } catch (err) {
-    next(err);
+    ctx.response.status = 500;
+    return next(err);
   }
 });
 

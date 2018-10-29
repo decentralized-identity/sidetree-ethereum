@@ -24,13 +24,7 @@ async function _getContractInstance() {
 
 async function _buildTransaction(contractInstance, merkleRoot, ipfsHash, account) {
 
-  // return web3.eth.getTransactionCount(account.address, (count) => {
-  // TODO determine how to get the transaction count
-  if (!this.count) {
-    this.count = 16;
-  } else {
-    this.count ++;
-  }
+  const txCount = web3.eth.getTransactionCount(account.address);
 
   const methodEncoded = web3.sha3("newAnchorHash(bytes32,bytes32)").substr(0,10);
   const paramTypes = ["bytes32", "bytes32"];
@@ -39,7 +33,7 @@ async function _buildTransaction(contractInstance, merkleRoot, ipfsHash, account
   const dataEncoded = methodEncoded + paramEncoded.toString("hex");
 
   const txParams = {
-    nonce: "0x" + this.count.toString(16),
+    nonce: "0x" + txCount.toString(16),
     //gasPrice: '0x09184e72a000'  TODO: determine if we need to set gasPrice
     gasLimit: config.gasLimit,
     to: contractInstance.address,
@@ -53,7 +47,7 @@ async function _buildTransaction(contractInstance, merkleRoot, ipfsHash, account
   const serializedTx = tx.serialize();
   const rawTx = "0x" + serializedTx.toString("hex");
   return web3.eth.sendRawTransaction(rawTx)
-  // })
+
 }
 
 async function addAnchorHash(merkleRoot, ipfsHash) {
