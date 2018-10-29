@@ -1,15 +1,23 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
+const config = require("./config");
 const transactionService = require("./services/transactions");
 
 const router = new Router();
 
 router.post('/:apiVersion/transactions', async (ctx, next) => {
-  // TODO validate the ctx.params.apiVersion
-  let receipt = await transactionService.anchorNewHash(ctx.request.body);
-  console.log("receipt is ", receipt);
-  return next(receipt);
+  try {
+    return next();
+    // TODO validate the ctx.params.apiVersion
+    // TODO validate the anchorFileHash is in the body
+    console.log("in the route, ctx is ", ctx);
+    let receipt = await transactionService.anchorNewHash(ctx.request.body.anchorFileHash);
+    console.log("receipt is ", receipt);
+    return next(receipt);
+  } catch (err) {
+    next(err);
+  }
 });
 
 const app = new Koa();
@@ -18,8 +26,7 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-const PORT = 3000; // TODO move this to config
-const server = app.listen(PORT).on("error", err => {
+const server = app.listen(config.WEB_PORT).on("error", err => {
   console.error(err);
 });
 
