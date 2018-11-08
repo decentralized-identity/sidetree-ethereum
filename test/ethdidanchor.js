@@ -1,8 +1,7 @@
 const EthDIDAnchor = artifacts.require("./EthDIDAnchor.sol");
 
-
 contract("EthDIDAnchor", accounts => {
-  it("...should verify hash exist.", async () => {
+  it("...should verify hash exists.", async () => {
 
     const ethDIDAnchorInstance = await EthDIDAnchor.deployed();
 
@@ -12,7 +11,7 @@ contract("EthDIDAnchor", accounts => {
     let receipt = await ethDIDAnchorInstance.newAnchorHash(anchorHash, ipfsHash,  { from: accounts[0] });
     const getIPFSHashForAnchor = await ethDIDAnchorInstance.getIPFSHashForAnchor(anchorHash);
 
-    assert.equal(getIPFSHashForAnchor, ipfsHash, "The anchor hash does exists");
+    assert.equal(getIPFSHashForAnchor, ipfsHash, "The anchor hash exists");
     assert.equal(receipt.logs[0].event, "AnchorHashCreated");
     assert.equal(receipt.logs[0].args.anchorHash, anchorHash);
     assert.equal(receipt.logs[0].args.ipfsHash, ipfsHash);
@@ -26,7 +25,7 @@ contract("EthDIDAnchor", accounts => {
 
     const getIPFSHashForAnchor = await ethDIDAnchorInstance.getIPFSHashForAnchor(anchorHash);
 
-    assert.equal(getIPFSHashForAnchor, '0x0000000000000000000000000000000000000000000000000000000000000000', "The anchor hash does not exists");
+    assert.equal(getIPFSHashForAnchor, '0x0000000000000000000000000000000000000000000000000000000000000000', "The anchor hash does not exist");
   });
 
 })

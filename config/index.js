@@ -13,6 +13,8 @@ config.account = {
   privateKey: "43321939fdfa64cd3f9cf8e05fabf86600c8f349e7cb444f6d23b31f60d4095c"
 }
 
+config.EthDIDAnchorContractAddress = "0xdb1e4e5c1b8741d741c87d1a6a08b31ff4d25826";
+
 config.WEB_PORT = 3000; // APIs
 
 if (process.env.NODE_ENV == "production") {
