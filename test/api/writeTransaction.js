@@ -1,9 +1,31 @@
 const request = require("supertest");
+const multihash = require("multihashes");
+
 const EthDIDAnchor = artifacts.require("./EthDIDAnchor.sol");
 let db = require("../../db");
+let encoding = require("../../lib/encoding");
 let config = require("../../config");
+let cas = require("../../services/cas");
 
 let server, anchorInstance;
+
+const batchFileHash = "ECEF166788B0C1A8FDE4D513BFD73210A06F3ED4B214E68F0EEB970273652720";
+const merkleRoot = "0FC24F5DC74EABA666652F07097BB803151A5462E3EE3211D9C435DAA776278F";
+let ipfsHash, anchorFileHash, batchFileBase58, merkleRootBase58;
+
+function createAnchorFileHash() {
+  const batchFileMultihash = multihash.encode(Buffer.from(batchFileHash, "hex"), "sha2-256");
+  const merkleRootMultihash = multihash.encode(Buffer.from(merkleRoot, "hex"), "sha2-256");
+  batchFileBase58 = encoding.encodeBase58FromBuffer(batchFileMultihash);
+  merkleRootBase58 = encoding.encodeBase58FromBuffer(merkleRootMultihash);
+
+  let data = {
+    batchFileHash: batchFileBase58,
+    merkleRoot: merkleRootBase58
+  }
+
+  return encoding.encodeBase58FromString(JSON.stringify(data));
+}
 
 contract('POST /v1.0/transactions', accounts => {
 
@@ -12,6 +34,11 @@ contract('POST /v1.0/transactions', accounts => {
   });
 
   before(async () => {
+    anchorFileHash = createAnchorFileHash();
+    const bufferData = Buffer.from(anchorFileHash);
+    const putResults = await cas.putBuffer(bufferData);
+    ipfsHash = putResults[0].hash;
+
     anchorInstance = await EthDIDAnchor.new({from: accounts[0]});
     config.EthDIDAnchorContractAddress = anchorInstance.address;
     server = require("../../server");
@@ -24,7 +51,7 @@ contract('POST /v1.0/transactions', accounts => {
   });
 
   it('should return the ethereum transaction number', async () => {
-    const postBody = {anchorFileHash: "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG"};
+    const postBody = {anchorFileHash: ipfsHash};
     const response = await request(server).post("/v1.0/transactions").send(postBody).set('Accept', 'application/json');
     assert.equal(response.statusCode, 200);
   });
@@ -49,13 +76,14 @@ contract('POST /v1.0/transactions', accounts => {
       })
     });
 
-    const postBody = {anchorFileHash: "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG"};
+    const postBody = {anchorFileHash: ipfsHash};
     await request(server).post("/v1.0/transactions").send(postBody).set('Accept', 'application/json');
 
     return eventPromise.then(async result => {
       const dbCache = db.getCache()[1];
-      assert.equal(dbCache.anchorHash, "0x394369774138746d79644c6f6a4e4b7674330000000000000000000000000000");
-      assert.equal(dbCache.ipfsHash, "0x516d597741504a7a7635435a736e4136323573335866326e656d745967507048");
+
+      assert.equal(dbCache.ipfsHash, ipfsHash);
+      assert.equal(dbCache.anchorHash, merkleRootBase58);
     });
   });
 });
