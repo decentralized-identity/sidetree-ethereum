@@ -62,7 +62,7 @@ async function addAnchorHash(merkleRoot, ipfsHash) {
 
 async function listenForNewHashes() {
   return _getContractInstance().then(async contractInstance => {
-    let event = contractInstance.AnchorHashCreated();
+    let event = contractInstance.AnchorHashCreated({}, {fromBlock: 0, toBlock: 'latest'});
     event.watch((error, result) => {
       if (!error) {
         const ipfsHash = encoding.getMultiHashFromBytes32(result.args.ipfsHash);
