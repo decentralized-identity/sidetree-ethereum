@@ -79,8 +79,8 @@ contract('POST /v1.0/transactions', accounts => {
     const postBody = {anchorFileHash: ipfsHash};
     await request(server).post("/v1.0/transactions").send(postBody).set('Accept', 'application/json');
 
-    return eventPromise.then(async result => {
-      const dbCache = db.getCache()[1];
+    return eventPromise.then(async () => {
+      const dbCache = db.getItemAtIndex(1);
 
       assert.equal(dbCache.ipfsHash, ipfsHash);
       assert.equal(dbCache.anchorHash, merkleRootBase58);
