@@ -2,7 +2,17 @@
 Blockchain-specific code for the Sidetree-based DID Method implementation on Ethereum
 
 # Looking to contribute?
+That's great!  Take a look at the open [issues](https://github.com/decentralized-identity/sidetree-ethereum/issues).
 
-That's great!  We try to adhere to the Git branching model described in https://nvie.com/posts/a-successful-git-branching-model/
+# Set up your environment
+## Run IPFS
 
-Checkout the `dev` branch and create a new feature/bug fix branch off of that.  Create PRs that point back to `dev`. At certain points (tbd exactly when) we will merge `dev` into `master`.
+* [Install IPFS](https://docs.ipfs.io/introduction/install/)
+* [Start IPFS](https://docs.ipfs.io/introduction/usage/)
+
+## Run a local Ethereum blockchain
+* [Install Ganache](https://github.com/trufflesuite/ganache-cli)
+* Start ganache: `ganache-cli` or `npm run start-ganache`
+
+# Run the tests
+* `npm test`
