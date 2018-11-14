@@ -2,9 +2,16 @@
  * Content addressable storage
  */
 
-async function fetchDataAtAddress(CASAddress) {
-  // TODO: implement this!
-  return "T7xykxQiS3ES8L2u3hTFVGWEW6er5vcsLpV9RGvpcHL9oriypeNWiNSAbJUoymkDUD9vskc5uEfd3St2K4VDcGEPZsCRtkUq6bJ1SAm1DJyNSdkx";
+const ipfs = require("../lib/ipfs");
+
+async function fetchBufferAtAddress(CASAddress) {
+  const ipfsData = await ipfs.files.get(CASAddress);
+  return ipfsData[0].content;
 }
 
-module.exports = { fetchDataAtAddress }
+async function putBuffer(bufferData) {
+  const address = await ipfs.files.add(bufferData);
+  return address;
+}
+
+module.exports = { fetchBufferAtAddress, putBuffer }

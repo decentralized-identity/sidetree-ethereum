@@ -4,6 +4,8 @@ const abi = require('ethereumjs-abi');
 
 const db = require("../db");
 const config = require("../config");
+const encoding = require("../lib/encoding");
+
 const web3 = config.web3;
 
 // Get a JS object representing the deployed smart contract
@@ -26,10 +28,12 @@ async function _getContractInstance() {
 async function _buildTransaction(contractInstance, merkleRoot, ipfsHash, account) {
 
   const txCount = web3.eth.getTransactionCount(account.address);
-
+  const merkleRootBytes32 = encoding.getBytes32FromSHA256Hash(merkleRoot);
+  const ipfsHashBytes32 = encoding.getBytes32FromSHA256Hash(ipfsHash);
+  
   const methodEncoded = web3.sha3("newAnchorHash(bytes32,bytes32)").substr(0,10);
   const paramTypes = ["bytes32", "bytes32"];
-  const paramValues = [web3.fromAscii(merkleRoot), web3.fromAscii(ipfsHash)];
+  const paramValues = [merkleRootBytes32, ipfsHashBytes32];
   const paramEncoded = abi.rawEncode(paramTypes, paramValues);
   const dataEncoded = methodEncoded + paramEncoded.toString("hex");
 
@@ -48,7 +52,6 @@ async function _buildTransaction(contractInstance, merkleRoot, ipfsHash, account
   const serializedTx = tx.serialize();
   const rawTx = "0x" + serializedTx.toString("hex");
   return web3.eth.sendRawTransaction(rawTx)
-
 }
 
 async function addAnchorHash(merkleRoot, ipfsHash) {
@@ -59,10 +62,13 @@ async function addAnchorHash(merkleRoot, ipfsHash) {
 
 async function listenForNewHashes() {
   return _getContractInstance().then(async contractInstance => {
-    let event = contractInstance.allEvents();
+    let event = contractInstance.AnchorHashCreated();
     event.watch((error, result) => {
       if (!error) {
-        db.addHash(result.args.anchorHash, result.args.ipfsHash, result.args.transactionNumber);
+        const ipfsHash = encoding.getMultiHashFromBytes32(result.args.ipfsHash);
+        // The anchorHash is the merkle root hash
+        const anchorHash = encoding.getMultiHashFromBytes32(result.args.anchorHash);
+        db.addHash(anchorHash, ipfsHash, result.args.transactionNumber);
       }
     });
     return contractInstance;
