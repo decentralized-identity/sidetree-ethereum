@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest",
+    "test": "truffle test",
     "start": "node server.js",
-    "start-ganache": "ganache-cli -m excite observe group device struggle fruit refuse birth earth better junk bind"
+    "start-ganache": "ganache-cli"
   },
   "jest": {
     "testEnvironment": "node"
