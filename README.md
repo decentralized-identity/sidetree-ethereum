@@ -1,4 +1,7 @@
 # sidetree-ethereum
+
+[![Build Status](https://travis-ci.org/decentralized-identity/sidetree-ethereum.svg?branch=master)](https://travis-ci.org/decentralized-identity/sidetree-ethereum)
+
 Blockchain-specific code for the Sidetree-based DID Method implementation on Ethereum
 
 # Looking to contribute?
