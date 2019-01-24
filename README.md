@@ -19,3 +19,4 @@ That's great!  Take a look at the open [issues](https://github.com/decentralized
 
 # Run the tests
 * `npm test`
+
