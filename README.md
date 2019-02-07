@@ -12,14 +12,12 @@ See the mono repo for integration tests... COMING SOON.
 A Sidetree Transaction is a JSON Document of the following format:
 
 ```json
- [
-    {
-    "transactionTime": 53,
-    "transactionTimeHash": "0xa6dd7120730ddccf4788a082b0b5607fd1f39dbb80ebc170678551878b90b835",
-    "transactionNumber": 15,
-    "anchorFileHash": "QmcModh3cTgSpr8A6m7jNHnwVZRGZsepWv3uaFtD5KhL2U"
-    }
-]
+{
+  "transactionTime": 53,
+  "transactionTimeHash": "0xa6dd7120730ddccf4788a082b0b5607fd1f39dbb80ebc170678551878b90b835",
+  "transactionNumber": 15,
+  "anchorFileHash": "QmcModh3cTgSpr8A6m7jNHnwVZRGZsepWv3uaFtD5KhL2U"
+}
 ```
 
 The `anchorFileHash` is a multihash content address for an anchor file of the following format:
