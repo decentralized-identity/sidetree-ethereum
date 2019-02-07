@@ -7,7 +7,7 @@ cache: npm
 before_install:
   # Install Ethereum Dependencies
   - npm i -g ganache-cli@6.3.0 truffle@5.0.3
-  - ganache-cli -m "weird ensure parent humor crawl doctor machine narrow subway bleak panel worth" &>/dev/null &
+  - ganache-cli -m "$MNEMONIC" &>/dev/null &
   - sleep 6 # wait for ganache
   # Check Ganache
   - curl -s -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":0}' http://localhost:8545 | jq -r '.'
