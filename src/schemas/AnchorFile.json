@@ -1,0 +1,16 @@
+{
+    "id": "AnchorFile",
+    "type": "object",
+    "properties": {
+      "batchFileHash": {
+        "type": "string",
+        "example": 545236
+      },
+      "merkleRoot": {
+        "type": "string",
+        "example": "0000000000000000002443210198839565f8d40a6b897beac8669cf7ba629051"
+      }
+    },
+    "required": ["batchFileHash", "merkleRoot"]
+  }
+  

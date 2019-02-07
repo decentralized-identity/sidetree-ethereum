@@ -1,0 +1,11 @@
+{
+  "id": "CreateTransaction",
+  "type": "object",
+  "properties": {
+    "anchorFileHash": {
+      "type": "string",
+      "example": "QmcModh3cTgSpr8A6m7jNHnwVZRGZsepWv3uaFtD5KhL2U"
+    }
+  },
+  "required": ["anchorFileHash"]
+}

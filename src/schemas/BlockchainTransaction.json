@@ -1,0 +1,28 @@
+{
+  "id": "BlockchainTransaction",
+  "type": "object",
+  "properties": {
+    "transactionNumber": {
+      "type": "integer",
+      "example": 123
+    },
+    "transactionTime": {
+      "type": "integer",
+      "example": 456
+    },
+    "transactionTimeHash": {
+      "type": "string",
+      "example": "0000000000000000001443210198839565f8d40a6b897beac8669cf7ba629051"
+    },
+    "anchorFileHash": {
+      "type": "string",
+      "example": "0000000000000000002443210198839565f8d40a6b897beac8669cf7ba629051"
+    }
+  },
+  "required": [
+    "transactionNumber",
+    "transactionTime",
+    "transactionTimeHash",
+    "anchorFileHash"
+  ]
+}
