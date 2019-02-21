@@ -2,27 +2,22 @@ language: node_js
 node_js:
   - "8.11.4"
 
+cache: npm
+
 before_install:
   # Install Ethereum Dependencies
-  - npm i -g ganache-cli@6.1.0 truffle@4.1.14
-  - ganache-cli &>/dev/null &
+  - npm i -g ganache-cli@6.3.0 truffle@5.0.3
+  - ganache-cli -m "$MNEMONIC" &>/dev/null &
   - sleep 6 # wait for ganache
-  # Install IPFS Dependencies
-  - wget "https://dist.ipfs.io/go-ipfs/v0.4.9/go-ipfs_v0.4.9_linux-amd64.tar.gz" -O /tmp/ipfs.tar.gz
-  - pushd . && cd $HOME/bin && tar -xzvf /tmp/ipfs.tar.gz && popd
-  - export PATH="$HOME/bin/go-ipfs:$PATH"
-  - ipfs init
-  - ipfs daemon &>/dev/null &
-  - sleep 5 # wait for ipfs
-  # Check IPFS
-  - curl http://localhost:5001/api/v0/id
   # Check Ganache
-  - curl -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":0}' http://localhost:8545
-  # Migrate Ethereum Contracts to Ganache
-  - truffle migrate --network dev
-  
+  - curl -s -X POST --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":0}' http://localhost:8545 | jq -r '.'
+  - curl -s -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x6bb093d7bbe83e19ae8173ee29e8830521e1bbb3", "latest"],"id":1}' http://localhost:8545 | jq -r '.'
+
+
 install:
   - npm i
 
 script:
+  - npm run contracts:test
+  - npm run contracts:migrate:dev
   - npm run test
