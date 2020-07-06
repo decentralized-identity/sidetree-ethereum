@@ -1,3 +1,10 @@
+# Repo is inactive
+
+See these repos instead:
+
+- [element](https://github.com/decentralized-identity/element)
+- [sidetree](https://github.com/decentralized-identity/sidetree)
+
 # Sidetree Ethereum
 
 [![Build Status](https://travis-ci.org/decentralized-identity/sidetree-ethereum.svg?branch=master)](https://travis-ci.org/decentralized-identity/sidetree-ethereum)
